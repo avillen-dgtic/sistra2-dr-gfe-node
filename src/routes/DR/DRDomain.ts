@@ -68,7 +68,7 @@ class DRDomain {
 		const filterParams: [] = params.filtro;
 		for (const item in filterParams) {
 			if (Object.prototype.hasOwnProperty.call(filterParams, item)) {
-				retQuery = `${retQuery} AND ${filterParams[item].codigo} ~ '${filterParams[item].valor}'`;
+				retQuery = `${retQuery} AND ${filterParams[item].codigo}::text ~ '${filterParams[item].valor}'::text`;
 			}
 		}
 
