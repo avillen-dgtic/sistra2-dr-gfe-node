@@ -7,8 +7,12 @@
 import express from "express";
 const api = express.Router();
 
-// import public-routers
-import publicController from "./public";
-api.use("/", publicController);
+// import dr-routes
+import drController from "./DR/routes";
+api.use("/dr/", drController);
+
+// import gfe-routes
+import gfeController from "./GFE/routes";
+api.use("/gfe/", gfeController);
 
 export = api;

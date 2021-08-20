@@ -4,8 +4,13 @@
  * MIT Licensed
  */
 
+
+// Environment variables
+import * as dotenv from "dotenv";
+dotenv.config({ path: ".env" });
+
 import express from "express";
-import cookieParser from "cookie-parser";
+
 
 /**
  * Routes (route handlers).
@@ -16,12 +21,12 @@ import Routes from "./routes/index";
  * Create Express server.
  */
 const app = express();
+app.use(express.json()); // support json encoded bodies
+app.use(express.urlencoded({ extended: true })); // support encoded bodies
 
 /**
  * Express configuration
  */
-
-app.use(cookieParser());
 app.use("/", Routes);
 
 
