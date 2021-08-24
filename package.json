@@ -16,8 +16,7 @@
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --nspect dist/server.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
-    "clean-dist": "Rmdir dist /q /s 2>nul",
-    "heroku": "npm run build-ts && npm run dist/server.js"
+    "clean-dist": "Rmdir dist /q /s 2>nul"
   },
   "repository": {
     "type": "git",
