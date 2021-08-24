@@ -29,7 +29,6 @@ class DRDomain {
 		this.pool = new Pool(config);
 	}
 
-
 	/**
 	 * query
 	 * @param query
