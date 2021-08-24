@@ -64,7 +64,7 @@ class DRDomain {
 		if (params.filtro === undefined || params.filtro.length <= 0) return "";
 
 		let retQuery: string = "WHERE true";
-		const filterParams: [] = params.filtro;
+		const filterParams: [any] = params.filtro;
 		for (const item in filterParams) {
 			if (Object.prototype.hasOwnProperty.call(filterParams, item)) {
 				retQuery = `${retQuery} AND ${filterParams[item].codigo}::text ~ '${filterParams[item].valor}'::text`;
