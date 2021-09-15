@@ -24,7 +24,7 @@ class DRDomain {
 			user: process.env.POSTGRES_USER,
 			host: process.env.POSTGRES_HOST,
 			password: process.env.POSTGRES_PASS,
-			database: process.env.POSTGRES_DATABASE,
+			database: process.env.POSTGRES_DDBB,
 		};
 		this.pool = new Pool(config);
 	}
