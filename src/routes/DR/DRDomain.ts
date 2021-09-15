@@ -21,10 +21,10 @@ class DRDomain {
 
 	constructor() {
 		const config: any = {
-			user: process.env.POSTGRES_USER,
 			host: process.env.POSTGRES_HOST,
-			password: process.env.POSTGRES_PASS,
 			database: process.env.POSTGRES_DDBB,
+			user: process.env.POSTGRES_USER,
+			password: process.env.POSTGRES_PASS
 		};
 		this.pool = new Pool(config);
 	}
