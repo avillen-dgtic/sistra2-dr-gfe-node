@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+
+<body class="navbar-top">
+	<!-- Main navbar -->
+	<!-- Page content -->
+	<div class="page-content">
+		<div class="content-wrapper">
+			<div class="content">
+				<label for="fname">Aquesta pàgina està fora de la plataforma de Sistra2</label><br>
+				<input type="submit" onclick="enviar()" value="Enviar formulari">
+
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+
+	function enviar() {
+		$.ajax({
+			url: `../resultado/<%= sesion%>`,
+			method: "post",
+			dataType: "json"
+		})
+			.done(function (data) {
+				var laUrl = data.url;
+				document.location.href = laUrl;
+			}).fail(function () {
+				alert("Error al guardar el documento XML!!");
+			});
+	}
+</script>
+
+</html>

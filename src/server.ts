@@ -10,7 +10,8 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
 import express from "express";
-
+import session from "express-session";
+import path from "path";
 
 /**
  * Routes (route handlers).
@@ -21,6 +22,21 @@ import Routes from "./routes/index";
  * Create Express server.
  */
 const app = express();
+/**
+ * Engine
+ */
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "../views"));
+app.use(session({
+	name: "sistra2SessionExpress",
+	proxy: true,
+	resave: true,
+	saveUninitialized: true,
+	secret: "randomrandomrandomcookies"
+	// store: sessionStore, // connect-mongo session store
+}));
+
+
 app.use(express.json()); // support json encoded bodies
 app.use(express.urlencoded({ extended: true })); // support encoded bodies
 
