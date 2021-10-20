@@ -33,15 +33,20 @@ const api = express.Router();
 api.get("/resultado/:id", async function (req: express.Request, res) {
 	const idSesion = req.params.id.split(":")[0];
 	console.log(idSesion);
-	console.log(cache.get(idSesion));
+	const dataRecovered: any = cache.get(idSesion);
+	console.log(dataRecovered);
+	console.log(dataRecovered.xml);
 
+	const xmlBase64 = Buffer.from(dataRecovered.xml, "utf-8").toString("base64");
+	console.log(xmlBase64);
 	const fs = require("fs").promises;
 	const contents = await fs.readFile("./GFE.pdf", { encoding: "base64" });
+
 
 	const result = {
 		idSesionFormulario: idSesion,
 		cancelado: false,
-		xml: "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHVybjpGT1JNVUxBUklPIGFjY2lvbj0iIiB4bWxuczp1cm49InVybjplczpjYWliOnNpc3RyYTI6eG1sOmZvcm11bGFyaW86djE6bW9kZWwiLz4=",
+		xml: xmlBase64,
 		pdf: contents
 	};
 	return res.send(result);
@@ -50,10 +55,11 @@ api.get("/resultado/:id", async function (req: express.Request, res) {
 api.post("/resultado/:id", async function (req: express.Request, res) {
 	const idSesion = req.params.id;
 	console.log(idSesion);
+	console.log(req.body.xml);
 
+	cache.set(idSesion, Object.assign({}, { xml: req.body.xml }));
 
 	const url = "https://dev.caib.es/sistramitfront/asistente/retornoGestorFormularioExterno.html?ticket=";
-
 	return res.send({ url: `${url}${idSesion}:${new Date().getTime()}` });
 
 });

@@ -2,29 +2,103 @@
 <html>
 
 <head>
+	<style>
+		#header {
+			background-color: #CC073C;
+			font-family: Arial, Helvetica, sans-serif;
+			color: rgb(255, 255, 255);
+			text-align: center;
+			padding: 5px;
+		}
+
+		#section {
+			width: 100%;
+			text-align: center;
+
+			float: left;
+		}
+
+		#footer {
+			background-color: #CC073C;
+			font-family: Arial, Helvetica, sans-serif;
+			color: white;
+			clear: both;
+			text-align: center;
+			padding: 5px;
+		}
+	</style>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 
-<body class="navbar-top">
-	<!-- Main navbar -->
-	<!-- Page content -->
-	<div class="page-content">
-		<div class="content-wrapper">
-			<div class="content">
-				<label for="fname">Aquesta pàgina està fora de la plataforma de Sistra2</label><br>
-				<input type="submit" onclick="enviar()" value="Enviar formulari">
+<body>
+	<div id="header">
+		<h1>GFE per a Sistra2</h1>
+	</div>
+	<div id="section">
 
-			</div>
-		</div>
+		<br><br>
+		<label for="fname">Aquesta pàgina està fora de la plataforma de Sistra2</label><br>
+		<label for="fname">A continuació teniu uns camps per omplir.</label><br>
+		<label for="fname">En acabar podeu enviar el formulari.</label><br><br>
+
+		<form name="formulari">
+
+			<label for="fname">El teu nom</label><br>
+			<input type="text" name="nom" placeholder="Nom" />
+			<br><br>
+
+			<label for="fname">Els teus cognoms</label><br>
+			<input type="text" name="cognoms" placeholder="Cognoms" />
+			<br><br>
+
+			<label for="fname">Selecciona el teu municipi</label><br>
+			<select name="municipi">
+				<option value="Palma">Palma</option>
+				<option value="Bunyola">Bunyola</option>
+				<option value="Calvià">Calvià</option>
+				<option value="Sòller">Sòller</option>
+				<option value="Andratx">Andratx</option>
+				<option value="Inca">Inca</option>
+				<option value="Manacor">Manacor</option>
+			</select>
+			<br><br>
+
+			<label for="start">Selecciona una data</label><br>
+			<input type="date" id="start" name="data" value="" min="2021-01-01" max="2023-12-31">
+			<br><br>
+
+
+			<label for="fname">Comentari</label><br>
+			<textarea name="comentari" rows="10" cols="30" placeholder="Comentari"></textarea>
+			<br><br>
+
+		</form>
+		<input type="submit" onclick="enviar()" value="Enviar formulari">
+		<br><br>
+
+	</div>
+	<div id="footer">
+		<script>
+			document.write('&copy;');
+			document.write(new Date().getFullYear());
+			document.write('  - All Rights Reserved.');
+			document.write('<br/>Last Updated : ');
+			document.write(document.lastModified);
+		</script>
 	</div>
 </body>
 
 <script>
 
 	function enviar() {
+
+		var xml = getXml();
+		var jsonXML = { "xml": xml };
+		console.log(jsonXML);
 		$.ajax({
 			url: `../resultado/<%= sesion%>`,
 			method: "post",
+			data: jsonXML,
 			dataType: "json"
 		})
 			.done(function (data) {
@@ -34,6 +108,18 @@
 				alert("Error al guardar el documento XML!!");
 			});
 	}
+
+	function getXml() {
+		var elements = document.forms.formulari.elements;
+		var xmlTemplate = '<?xml version="1.0"?><urn:FORMULARIO accion="" xmlns:urn="urn:es:caib:sistra2:xml:formulario:v1:model">';
+		for (var i = 0; i < elements.length; i++) {
+			var element = elements[i];
+			xmlTemplate = xmlTemplate + '<' + element.name + '>' + element.value + '</' + element.name + '>';
+		}
+		xmlTemplate = xmlTemplate + '</urn:FORMULARIO>';
+		return xmlTemplate;
+	}
+
 </script>
 
 </html>
