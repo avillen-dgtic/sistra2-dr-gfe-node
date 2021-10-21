@@ -92,13 +92,13 @@
 
 	function enviar() {
 
-		var xml = getXml();
-		var jsonXML = { "xml": xml };
-		console.log(jsonXML);
+		var dataParsed = parserDOM();
+		console.log(dataParsed);
+
 		$.ajax({
 			url: `../resultado/<%= sesion%>`,
 			method: "post",
-			data: jsonXML,
+			data: dataParsed,
 			dataType: "json"
 		})
 			.done(function (data) {
@@ -109,15 +109,29 @@
 			});
 	}
 
-	function getXml() {
-		var elements = document.forms.formulari.elements;
+	function parserDOM() {
+
+		// Init variables
+		var jsonTemplate = {};
 		var xmlTemplate = '<?xml version="1.0"?><urn:FORMULARIO accion="" xmlns:urn="urn:es:caib:sistra2:xml:formulario:v1:model">';
+
+
+		var elements = document.forms.formulari.elements;
 		for (var i = 0; i < elements.length; i++) {
 			var element = elements[i];
+
+			// Asign data to xml and json structures
+			// xml
 			xmlTemplate = xmlTemplate + '<' + element.name + '>' + element.value + '</' + element.name + '>';
+			// json
+			jsonTemplate[element.name] = element.value;
 		}
 		xmlTemplate = xmlTemplate + '</urn:FORMULARIO>';
-		return xmlTemplate;
+
+		return {
+			xml: xmlTemplate,
+			json: jsonTemplate
+		};
 	}
 
 </script>
