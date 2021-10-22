@@ -53,7 +53,7 @@ app.use((req, res, next) => {
 	const request: express.Request = req;
 	console.log(request);
 	res.status(404);
-	res.send("Codi 404. La ruta no existeix.");
+	return res.send("Codi 404. La ruta no existeix.");
 });
 
 /**

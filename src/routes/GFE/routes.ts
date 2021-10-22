@@ -10,6 +10,7 @@
 import * as express from "express";
 import NodeCache from "node-cache";
 import { jsPDF } from "jspdf";
+import { nodeModuleNameResolver } from "typescript";
 
 
 const cache = new NodeCache({ stdTTL: 0 });
@@ -47,6 +48,9 @@ api.get("/resultado/:id", async function (req: express.Request, res) {
 	doc.save("document.pdf");
 	const pdfBase64 = Buffer.from(doc.output()).toString("base64");
 
+	// Delete cache data, like OTP ticket
+	cache.del(idSesion);
+
 	return res.send({
 		idSesionFormulario: idSesion,
 		cancelado: false,
@@ -71,14 +75,40 @@ api.get("/rellenar/:IdSesion", async function (req: express.Request, res) {
 	console.log("Page GFE - Formulario GET");
 	const idSesion = req.params.IdSesion;
 	console.log(idSesion);
+	console.log(cache.get(idSesion));
+	const cacheData: any = cache.get(idSesion);
+	const xmlDatosActuales = cacheData.xmlDatosActuales;
 
-	return res.render("GFE/base", { sesion: idSesion });
+	console.log(Buffer.from(xmlDatosActuales, "base64").toString());
+	const xml2js = require("xml2js");
+	// convert XML to JSON
+	xml2js.parseString(Buffer.from(xmlDatosActuales, "base64").toString(), (err: any, result: any) => {
+		if (err) {
+			throw err;
+		}
+
+		const element: any = Object.keys(result)[0];
+		const nom = result[element].nom || "";
+		const cognoms = result[element].cognoms || "";
+		const data = result[element].data || "";
+		const comentari = result[element].comentari || "";
+
+		return res.render("GFE/base", {
+			sesion: idSesion,
+			nom: nom,
+			cognoms: cognoms,
+			data,
+			comentari
+		});
+	});
+
 });
 
 api.post("/formulario", async function (req: express.Request, res) {
 	const request: express.Request = req;
 	console.log("Page GFE - Formulario POST");
 	cache.set(req.body.idSesionFormulario, Object.assign({}, req.body));
+	console.log(req.body);
 	console.log(req.body.idSesionFormulario);
 
 	return res.status(200).send(`http://epreinf147:3000/gfe/rellenar/${req.body.idSesionFormulario}`);

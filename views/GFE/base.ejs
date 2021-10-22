@@ -44,32 +44,21 @@
 		<form name="formulari">
 
 			<label for="fname">El teu nom</label><br>
-			<input type="text" name="nom" placeholder="Nom" />
+			<input type="text" name="nom" placeholder="Nom" value="<%= nom%>" />
 			<br><br>
 
 			<label for="fname">Els teus cognoms</label><br>
-			<input type="text" name="cognoms" placeholder="Cognoms" />
+			<input type="text" name="cognoms" placeholder="Cognoms" value="<%= cognoms%>" />
 			<br><br>
 
-			<label for="fname">Selecciona el teu municipi</label><br>
-			<select name="municipi">
-				<option value="Palma">Palma</option>
-				<option value="Bunyola">Bunyola</option>
-				<option value="Calvià">Calvià</option>
-				<option value="Sóller">Sóller</option>
-				<option value="Andratx">Andratx</option>
-				<option value="Inca">Inca</option>
-				<option value="Manacor">Manacor</option>
-			</select>
-			<br><br>
 
 			<label for="start">Selecciona una data</label><br>
-			<input type="date" id="start" name="data" value="" min="2021-01-01" max="2023-12-31">
+			<input type="date" id="start" name="data" value="<%= data%>" min="2021-01-01" max="2023-12-31">
 			<br><br>
 
 
 			<label for="fname">Comentari</label><br>
-			<textarea name="comentari" rows="10" cols="30" placeholder="Comentari"></textarea>
+			<textarea name="comentari" rows="10" cols="30" placeholder="Comentari" ><%= comentari%></textarea>
 			<br><br>
 
 		</form>
